@@ -64,18 +64,18 @@ class Task extends \controllers\Base
                     $ext=='gif' || $ext=='GIF'  )
                 {
                     $sizeImage = getimagesize($_FILES['file']["tmp_name"]);
-                    $uploaddir = $_SERVER['DOCUMENT_ROOT'].'/img/';
+                    $uploaddir = __DIR__ . '/../img/';
                     $uploadfile = $uploaddir . basename($_FILES['file']['name']);
 
                     if ($sizeImage[0]<=320 & $sizeImage[1]<=240) {
                         if (move_uploaded_file($_FILES['file']['tmp_name'], $uploadfile)) {
-                            chmod($_SERVER['DOCUMENT_ROOT'].'/img/'.$_FILES['file']['name'],0777);
+                            chmod(__DIR__ . '/../img/'.$_FILES['file']['name'],0777);
                         } else {
                             echo "File uploading failed.\n";
                         }
                     } else {
                         $this->iHelper->imageresize($_FILES['file']['name'], $_FILES['file']['tmp_name'], $uploadfile);
-                        chmod($_SERVER['DOCUMENT_ROOT'].'/img/'.$_FILES['file']['name'],0777);
+                        chmod(__DIR__ . '/../img/'.$_FILES['file']['name'],0777);
                     }
                 }
             }
@@ -84,7 +84,7 @@ class Task extends \controllers\Base
                 'email' => isset($_POST['email']) ? $_POST['email'] : 'no email',
                 'text' => isset($_POST['task']) ? $_POST['task'] : 'no task',
                 'img' => isset($_FILES['file']['name']) ? '/img/'.$_FILES['file']['name'] : 'no photo',
-                'created_at' => date("j.n.Y")
+                'created_at' => date('Y-m-d H:i:s')
             ]);
         }
         $_SESSION['success'] = 'Task successfully created!';
